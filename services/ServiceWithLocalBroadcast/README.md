@@ -1,3 +1,5 @@
+Logs on Logcat
+
 ```
 E/StatusBroadcastService: onStartCommand() - startID is 1
 E/StatusBroadcastService: onStartCommand() - sending status via local broadcast from tid:1
