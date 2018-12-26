@@ -4,15 +4,18 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 import java.util.Random;
 
 public class BoundService extends Service {
 
+    private static final String TAG = "BoundService";
+
     // Binder given to clients
     private final IBinder iBinder = new MyBinder();
 
-    /* system caches the IBinder service communication channel. In other words,
+    /* system CACHES the IBinder service communication channel. In other words,
      * the system calls the service's onBind() method to generate the IBinder only when the first client binds.
      * The system then delivers that same IBinder to all additional clients that bind to that same service,
      * without calling onBind() again. */
@@ -33,9 +36,10 @@ public class BoundService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
+        Log.e(TAG, "onBind() started");
 
-        //this iBinder is passed to ServiceConnection's onServiceConnected() method
-        // in the client binding to this service
+        //this iBinder object is passed to ServiceConnection's onServiceConnected() method
+        //in the client binding to this service
         return iBinder;
     }
 
@@ -44,3 +48,33 @@ public class BoundService extends Service {
         return random.nextInt(100);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

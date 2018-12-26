@@ -7,10 +7,12 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 public class BindingActivity extends AppCompatActivity {
+    private static final String TAG = "BindingActivity";
     BoundService boundService;
     boolean isBound = false;
 
@@ -37,13 +39,15 @@ public class BindingActivity extends AppCompatActivity {
 
     /** Called when a button is clicked (the button in the layout file attaches to
      * this method with the android:onClick attribute) */
-    public void onButtonClick(View v) {
+    public void onButtonClick(View view) {
         if (isBound) {
             // Call a method from the BoundService.
             // However, if this call were something that might hang, then this request should
             // occur in a separate thread to avoid slowing down the activity performance.
-            int num = boundService.getRandomNumber();
-            Toast.makeText(this, "number: " + num, Toast.LENGTH_SHORT).show();
+            if (view.getId() == R.id.button) {
+                int num = boundService.getRandomNumber();
+                Toast.makeText(view.getContext(), "random number is " + num, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -51,8 +55,9 @@ public class BindingActivity extends AppCompatActivity {
     private ServiceConnection serviceConnection = new ServiceConnection() {
 
         @Override
-        public void onServiceConnected(ComponentName className,
-                                       IBinder iBinder) {
+        public void onServiceConnected(ComponentName className, IBinder iBinder) {
+            Log.e(TAG, "onServiceConnected() started");
+
             // We've bound to BoundService, cast the IBinder and get BoundService instance
             BoundService.MyBinder binder = (BoundService.MyBinder) iBinder;
             boundService = binder.getService();
@@ -65,3 +70,29 @@ public class BindingActivity extends AppCompatActivity {
         }
     };
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
