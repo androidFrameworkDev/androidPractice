@@ -41,10 +41,10 @@ public class BindingActivity extends AppCompatActivity {
      * this method with the android:onClick attribute) */
     public void onButtonClick(View view) {
         if (isBound) {
-            // Call a method from the BoundService.
-            // However, if this call were something that might hang, then this request should
-            // occur in a separate thread to avoid slowing down the activity performance.
             if (view.getId() == R.id.button) {
+                // Call a method from the BoundService.
+                // However, if this call were something that might hang, then this request should
+                // occur in a separate thread to avoid slowing down the activity performance.
                 int num = boundService.getRandomNumber();
                 Toast.makeText(view.getContext(), "random number is " + num, Toast.LENGTH_SHORT).show();
             }
@@ -54,6 +54,9 @@ public class BindingActivity extends AppCompatActivity {
     /** Defines callbacks for service binding, passed to bindService() */
     private ServiceConnection serviceConnection = new ServiceConnection() {
 
+        /* The binding is asynchronous, and bindService() returns immediately without returning the IBinder to the client.
+         * To receive the IBinder, the client must create an instance of ServiceConnection and pass it to bindService().
+         * The ServiceConnection includes a callback method onServiceConnected() that the system calls to deliver the IBinder.*/
         @Override
         public void onServiceConnected(ComponentName className, IBinder iBinder) {
             Log.e(TAG, "onServiceConnected() started");
@@ -64,8 +67,11 @@ public class BindingActivity extends AppCompatActivity {
             isBound = true;
         }
 
+        /* The Android system calls onServiceDisconnected() when the connection to the service is unexpectedly lost,
+        * such as when the service has crashed or has been killed. This is not called when the client unbinds."); */
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
+            Log.e(TAG, "onServiceDisconnected() is called");
             isBound = false;
         }
     };
